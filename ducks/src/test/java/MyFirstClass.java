@@ -21,5 +21,18 @@ public class MyFirstClass {
     Assert.assertTrue(wd.findElement(By.cssSelector("div[class='notice success']")).isDisplayed(), "Мы не залогинились!");
   }
 
+  @Test
+  public void addNewProductNoImg() {
+    adminLogIn();
+    wd.get("http://localhost/litecart/admin/?app=catalog&doc=catalog");
+    wd.findElement(By.cssSelector("a[href='http://localhost/litecart/admin/?category_id=0&app=catalog&doc=edit_product']")).click();
+    wd.findElement(By.cssSelector("input[value='1']")).click();
+    wd.findElement(By.cssSelector("input[name='name[en]']")).click();
+    wd.findElement(By.cssSelector("input[name='name[en]']")).clear();
+    wd.findElement(By.cssSelector("input[name='name[en]']")).sendKeys("NewDuckNoImg");
+    wd.findElement(By.cssSelector("button[name='save']")).click();
+    wd.quit();
+  }
+
 
 }
