@@ -125,10 +125,11 @@ public class MyFirstClass {
   }
 
   @Test
-  public void assertSticker4() {
+  public void assertStickerInOneItem() {
     wd = new ChromeDriver();
     wd.get("http://localhost/litecart/en/rubber-ducks-c-1/");
-    List<WebElement> ducks2 = wd.findElements(By.cssSelector("ul[class='listing-wrapper products'] a[class='link']"));
-
+    wd.findElement(By.cssSelector("a[href='http://localhost/litecart/en/rubber-ducks-c-1/purple-duck-p-5']")).click();
+    Assert.assertTrue(wd.findElement(By.cssSelector("a[class='main-image fancybox zoomable shadow'] div[class='sticker new']")).isDisplayed(), "Плашки нет!");
+    wd.quit();
   }
 }
