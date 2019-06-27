@@ -33,6 +33,10 @@ public class MyFirstClass {
     wd.findElement(By.cssSelector("input[name='name[en]']")).click();
     wd.findElement(By.cssSelector("input[name='name[en]']")).clear();
     wd.findElement(By.cssSelector("input[name='name[en]']")).sendKeys("NewDuckNoImg");
+    wd.findElement(By.cssSelector("input[name='code']")).click();
+    wd.findElement(By.cssSelector("input[name='code']")).clear();
+    wd.findElement(By.cssSelector("input[name='code']")).sendKeys("123321");
+
     wd.findElement(By.cssSelector("button[name='save']")).click();
     wd.quit();
   }
@@ -90,38 +94,26 @@ public class MyFirstClass {
   }
 
   @Test
-  public void assertSticker() {
+  public void assertStickersInItems() {
     wd = new ChromeDriver();
     wd.get("http://localhost/litecart/en/rubber-ducks-c-1/");
-    List<WebElement> ducks = wd.findElements(By.cssSelector("div[class='sticker sale']"));
-    ducks.contains(By.cssSelector("div[class='sticker sale']"));
-    System.out.println(ducks.size());
-    wd.quit();
-    // чушь он уже собирает коллекцию по локатору, смысл проверять что данная коллекция содержит эти локаторы. Это очевидно
-  }
-
-  @Test
-  public void assertSticker2() {
-    wd = new ChromeDriver();
-    wd.get("http://localhost/litecart/en/rubber-ducks-c-1/");
-    List<WebElement> ducks2 = wd.findElements(By.cssSelector("ul[class='listing-wrapper products'] a[class='link']"));
-    ducks2.contains(By.cssSelector("div[class='sticker sale']"));
-    wd.quit();
-    //тут берет всех уточек, и проверяет что в списке уточек есть плашка сэйлс, тоже немного не то.
-  }
-
-  @Test
-  public void assertSticker3() {
-    wd = new ChromeDriver();
-    wd.get("http://localhost/litecart/en/rubber-ducks-c-1/");
-    List<WebElement> ducks2 = wd.findElements(By.cssSelector("ul[class='listing-wrapper products'] a[class='link']"));
-    if (ducks2.contains(By.cssSelector("div[class='sticker sale']"))) {
-      System.out.println("Товары со скидкой есть!");
-    } else if (ducks2.contains(By.cssSelector("div[class='sticker new']"))) {
-      System.out.println("Новые товары есть!");
+    List<WebElement> ducks = wd.findElements(By.cssSelector("ul[class='listing-wrapper products'] a[class='link']"));
+    for (WebElement stickersNew : ducks) {
+      Assert.assertTrue(stickersNew.findElement(By.cssSelector("div.sticker")).isDisplayed(), "Стикер НЕ отображается");
+      //System.out.println(stickersNew.findElement(By.cssSelector("div.name")).getText());
     }
     wd.quit();
-    // проверяются отображения плашек Нью и Сэйлс и если они есть то выведит в консоль сообщения соответствующие
+  }
+
+  @Test
+  public void assertDucksName() {
+    wd = new ChromeDriver();
+    wd.get("http://localhost/litecart/en/rubber-ducks-c-1/");
+    List<WebElement> duck = wd.findElements(By.cssSelector("ul[class='listing-wrapper products'] a[class='link']"));
+    for (WebElement nameDucks : duck) {
+      Assert.assertTrue(nameDucks.findElement(By.cssSelector("div.name")).getText().contains("Duck"), "У товара нет приставки Duck");
+    }
+    wd.quit();
   }
 
   @Test
@@ -130,6 +122,18 @@ public class MyFirstClass {
     wd.get("http://localhost/litecart/en/rubber-ducks-c-1/");
     wd.findElement(By.cssSelector("a[href='http://localhost/litecart/en/rubber-ducks-c-1/purple-duck-p-5']")).click();
     Assert.assertTrue(wd.findElement(By.cssSelector("a[class='main-image fancybox zoomable shadow'] div[class='sticker new']")).isDisplayed(), "Плашки нет!");
+    wd.quit();
+  }
+
+  @Test
+  public void assertDucksPhoto() {
+    wd = new ChromeDriver();
+    wd.get("http://localhost/litecart/en/rubber-ducks-c-1/");
+    List<WebElement> duck = wd.findElements(By.cssSelector("ul[class='listing-wrapper products'] a[class='link']"));
+    for (WebElement photoDucks : duck) {
+      Assert.assertTrue(photoDucks.findElement(By.cssSelector("img.image")).isDisplayed(), "Фото нет");
+      Assert.assertTrue(photoDucks.findElement(By.cssSelector("div.manufacturer")).getText().contains("ACME Corp."), "Нет текста ACME corp.");
+    }
     wd.quit();
   }
 }
