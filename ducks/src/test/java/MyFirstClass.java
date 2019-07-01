@@ -147,7 +147,7 @@ public class MyFirstClass {
   //for(int i = 0; i < собранныйСписокПунктовМеню.size; i++)
 
   @Test
-  public void firstHomeWork() {
+  public void firstHomeWork0() {
     wd = new ChromeDriver();
     adminLogIn();
     List<WebElement> elements = wd.findElements(By.cssSelector("div[id='box-apps-menu-wrapper'] li[id]"));
@@ -156,6 +156,21 @@ public class MyFirstClass {
             "Modules", "Orders", "Pages", "Reports", "Settings", "Slides", "Tax", "Translations", "Users", "vQmods"));
     for (int i = 0; i < elements.size(); i++) {
       Assert.assertEquals(elements.get(i).getText(), menu.get(i), "количество элементов не совпадает с эталонным!");
+    }
+    wd.quit();
+  }
+
+  // практика по первому ХМ придуманная мной
+
+  @Test
+  public void firstHomeWork1() {
+    wd = new ChromeDriver();
+    adminLogIn();
+    List<WebElement> statistic = wd.findElements(By.cssSelector("li[id='widget-stats'] tr[class]"));
+    Assert.assertEquals(statistic.size(), 7);
+    ArrayList<String> stat = new ArrayList<String>(Arrays.asList("Statistics", "Total Sales: $7.20", "Total Sales 2019: $7.20", "Total Sales July: $0.00", "Average Order Amount: $7.20", "Number of Customers: 0", "Number of Products: 7"));
+    for (int i = 0; i < statistic.size(); i++) {
+      Assert.assertEquals(statistic.get(i).getText(), stat.get(i));
     }
     wd.quit();
   }
