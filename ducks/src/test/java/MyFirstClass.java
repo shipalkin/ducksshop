@@ -5,6 +5,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MyFirstClass {
@@ -133,6 +135,27 @@ public class MyFirstClass {
     for (WebElement photoDucks : duck) {
       Assert.assertTrue(photoDucks.findElement(By.cssSelector("img.image")).isDisplayed(), "Фото нет");
       Assert.assertTrue(photoDucks.findElement(By.cssSelector("div.manufacturer")).getText().contains("ACME Corp."), "Нет текста ACME corp.");
+    }
+    wd.quit();
+  }
+  // 1. Тест, который проверяет, что в админке все пункты меню на месте
+  //- авторизоваться в админку
+  //- посчитать количество пунктов меню слева
+  //- проверить, что их 17 (кажется их там 17)
+  //- проверить название каждого пункта меню (тут тебе нужно будет вручную создать список ожидаемых пунктов меню, поищешь, как это делать) и потом собрав список элементов пунктов меню через цикл фор - проверишь навзание каждого пункта.
+  //сразу дам подсказку - тут нужно будет использовать цикл фор такого типа
+  //for(int i = 0; i < собранныйСписокПунктовМеню.size; i++)
+
+  @Test
+  public void firstHomeWork() {
+    wd = new ChromeDriver();
+    adminLogIn();
+    List<WebElement> elements = wd.findElements(By.cssSelector("div[id='box-apps-menu-wrapper'] li[id]"));
+    Assert.assertEquals(elements.size(), 17, "Элементов не 17, ошибка!");
+    ArrayList<String> menu = new ArrayList<String>(Arrays.asList("Appearence", "Catalog", "Countries", "Currencies", "Customers", "Geo Zones", "Languages",
+            "Modules", "Orders", "Pages", "Reports", "Settings", "Slides", "Tax", "Translations", "Users", "vQmods"));
+    for (int i = 0; i < elements.size(); i++) {
+      Assert.assertEquals(elements.get(i).getText(), menu.get(i), "количество элементов не совпадает с эталонным!");
     }
     wd.quit();
   }
