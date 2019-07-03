@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.lang.Thread.sleep;
+
 public class MyFirstClass {
   public WebDriver wd;
 
@@ -164,7 +166,6 @@ public class MyFirstClass {
 
   @Test
   public void firstHomeWork1() {
-    wd = new ChromeDriver();
     adminLogIn();
     List<WebElement> statistic = wd.findElements(By.cssSelector("li[id='widget-stats'] tr[class]"));
     Assert.assertEquals(statistic.size(), 7);
@@ -174,4 +175,74 @@ public class MyFirstClass {
     }
     wd.quit();
   }
+
+  //вот это задание оппробуешь сделать
+  //ты уже проверял текст каждого пункта меню
+  //сейчас будешь на каждый элемент кликать
+  //и проверять наличие зщаголовка на странице
+
+  @Test
+  public void secondHomeWork() throws InterruptedException {
+    adminLogIn();
+    List<WebElement> menuItemlist = wd.findElements(By.cssSelector("div[id='box-apps-menu-wrapper'] li[id] a span[class='fa-stack fa-lg icon-wrapper']"));
+    Assert.assertEquals(menuItemlist.size(), 17, "Пунктов меньше 17");
+    for (int i = 1; i <= menuItemlist.size(); i++) {
+      String locator = "//ul[@id='box-apps-menu']/li[@id='app-'][" + i + "]//a";
+      wd.findElement(By.xpath(locator)).click();
+      sleep(500);
+      Assert.assertTrue(wd.findElement(By.cssSelector("td[id='content'] h1")).isDisplayed());
+      List<WebElement> menuPodMenu = wd.findElements(By.xpath("//li[contains(@id, 'doc-')]//a"));
+      if (menuPodMenu.size() > 0) {
+        for (int j = 1; j <= menuPodMenu.size(); j++) {
+          String locatorPodMenu = "//li[contains(@id, 'doc-')][" + j + "]//a";
+          wd.findElement(By.xpath(locatorPodMenu)).click();
+          sleep(500);
+          Assert.assertTrue(wd.findElement(By.cssSelector("td[id='content'] h1")).isDisplayed());
+        }
+      }
+    }
+    wd.quit();
+  }
+
+  @Test
+  public void countTest() {
+    int i = 1;
+    String g = "1";
+    int k = 1;
+    System.out.println(i + g);
+    System.out.println(i + k);
+  }
+
+  @Test(description = "Проверка соответствия названия пункта меню - заголовку страницы")
+  public void secondHomeWork1() throws InterruptedException {
+    adminLogIn();
+    List<WebElement> menuItemlist = wd.findElements(By.cssSelector("div[id='box-apps-menu-wrapper'] li[id] a span[class='fa-stack fa-lg icon-wrapper']"));
+    Assert.assertEquals(menuItemlist.size(), 17, "Пунктов меньше 17");
+    for (int i = 1; i <= menuItemlist.size(); i++) {
+      String locatorMenu = "//ul[@id='box-apps-menu']/li[@id='app-'][" + i + "]//a";
+      wd.findElement(By.xpath(locatorMenu)).click();
+      sleep(500);
+      Assert.assertTrue(wd.findElement(By.cssSelector("td[id='content'] h1")).isDisplayed());
+      if (!wd.findElement(By.xpath(locatorMenu)).getText().equals("Appearence")
+              || !wd.findElement(By.xpath(locatorMenu)).getText().equals("Modules")
+              || !wd.findElement(By.xpath(locatorMenu)).getText().equals("Reports")
+              || !wd.findElement(By.xpath(locatorMenu)).getText().equals("Tax")
+              || !wd.findElement(By.xpath(locatorMenu)).getText().equals("Translations")) {
+
+      }
+      Assert.assertEquals(wd.findElement(By.xpath(locatorMenu)).getText(), wd.findElement(By.cssSelector("td[id='content'] h1")).getText());
+      List<WebElement> menuPodMenu = wd.findElements(By.xpath("//li[contains(@id, 'doc-')]//a"));
+      if (menuPodMenu.size() > 0) {
+        for (int j = 1; j <= menuPodMenu.size(); j++) {
+          String locatorPodMenu = "//li[contains(@id, 'doc-')][" + j + "]//a";
+          wd.findElement(By.xpath(locatorPodMenu)).click();
+          sleep(500);
+          Assert.assertTrue(wd.findElement(By.cssSelector("td[id='content'] h1")).isDisplayed());
+          Assert.assertEquals(wd.findElement(By.xpath(locatorPodMenu)).getText(), wd.findElement(By.cssSelector("td[id='content'] h1")).getText());
+        }
+      }
+      wd.quit();
+    }
+  }
+
 }
