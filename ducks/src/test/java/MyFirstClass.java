@@ -245,7 +245,8 @@ public class MyFirstClass {
     wd.findElement(By.xpath("//input[@type='search']")).clear();
     wd.findElement(By.xpath("//input[@type='search']")).sendKeys("testItem");
     wd.findElement(By.xpath("//input[@type='search']")).sendKeys(Keys.ENTER);
-    Assert.assertTrue(wd.findElement(By.xpath("//img[@class='image']")).isDisplayed(), "Товара нет такого!");
+    List<WebElement> searchResult = wd.findElements(By.xpath("//div[@class='name']"));
+    Assert.assertTrue(searchResult.size() > 0, "Товара нет такого!");
     wd.quit();
   }
   }
