@@ -15,7 +15,7 @@ import static java.lang.Thread.sleep;
 public class MyFirstClass {
   public WebDriver wd;
 
-  @Test
+  @Test(description = "Метод логина в админку")
   public void adminLogIn() {
     wd = new ChromeDriver();
     wd.get("http://localhost/litecart/admin/login.php?redirect_url=%2Flitecart%2Fadmin%2F");
@@ -29,7 +29,7 @@ public class MyFirstClass {
     Assert.assertTrue(wd.findElement(By.cssSelector("div[class='notice success']")).isDisplayed(), "Мы не залогинились!");
   }
 
-  @Test
+  @Test(description = "Добавление нового продукта без фотографии")
   public void addNewProductNoImg() {
     adminLogIn();
     wd.get("http://localhost/litecart/admin/?app=catalog&doc=catalog");
@@ -46,7 +46,7 @@ public class MyFirstClass {
     wd.quit();
   }
 
-  @Test
+  @Test(description = "Добавление нового пользака на сайт и ассерт что он залогинился, + тест по удалению этого пользака для стабильности что бы тест был не одноразовы а бегал бесконечно")
   public void newCustomerAndLogin() {
     wd = new ChromeDriver();
     wd.get("http://localhost/litecart/en/");
@@ -98,19 +98,18 @@ public class MyFirstClass {
     wd.quit();
   }
 
-  @Test
+  @Test(description = "Создание коллекции со всеми продуктами и ассерт что есть стикер на товаре")
   public void assertStickersInItems() {
     wd = new ChromeDriver();
     wd.get("http://localhost/litecart/en/rubber-ducks-c-1/");
     List<WebElement> ducks = wd.findElements(By.cssSelector("ul[class='listing-wrapper products'] a[class='link']"));
     for (WebElement stickersNew : ducks) {
       Assert.assertTrue(stickersNew.findElement(By.cssSelector("div.sticker")).isDisplayed(), "Стикер НЕ отображается");
-      //System.out.println(stickersNew.findElement(By.cssSelector("div.name")).getText());
     }
     wd.quit();
   }
 
-  @Test
+  @Test(description = "Проверка что у всех товаров есть приставка DUCK")
   public void assertDucksName() {
     wd = new ChromeDriver();
     wd.get("http://localhost/litecart/en/rubber-ducks-c-1/");
@@ -121,7 +120,7 @@ public class MyFirstClass {
     wd.quit();
   }
 
-  @Test
+  @Test(description = "Проверка на наличие плашки в 1 конкретной утке")
   public void assertStickerInOneItem() {
     wd = new ChromeDriver();
     wd.get("http://localhost/litecart/en/rubber-ducks-c-1/");
@@ -130,7 +129,7 @@ public class MyFirstClass {
     wd.quit();
   }
 
-  @Test
+  @Test(description = "Наличие фотки\картинки в каждом товаре и наличие  ACME corp. на всем товаре")
   public void assertDucksPhoto() {
     wd = new ChromeDriver();
     wd.get("http://localhost/litecart/en/rubber-ducks-c-1/");
@@ -149,7 +148,7 @@ public class MyFirstClass {
   //сразу дам подсказку - тут нужно будет использовать цикл фор такого типа
   //for(int i = 0; i < собранныйСписокПунктовМеню.size; i++)
 
-  @Test
+  @Test(description = "Проверка наличия всех элементов бокового меню")
   public void firstHomeWork0() {
     wd = new ChromeDriver();
     adminLogIn();
@@ -165,7 +164,7 @@ public class MyFirstClass {
 
   // практика по первому ХМ придуманная мной
 
-  @Test
+  @Test(description = "Наличие всех строк в таблице статистики таблица на ГС админки http://localhost/litecart/admin/")
   public void firstHomeWork1() {
     adminLogIn();
     List<WebElement> statistic = wd.findElements(By.cssSelector("li[id='widget-stats'] tr[class]"));
@@ -182,7 +181,7 @@ public class MyFirstClass {
   //сейчас будешь на каждый элемент кликать
   //и проверять наличие зщаголовка на странице
 
-  @Test
+  @Test(description = "проклацивание каждого элемента бокового меню и проверка наличия у них загловоков")
   public void secondHomeWork() throws InterruptedException {
     adminLogIn();
     List<WebElement> menuItemlist = wd.findElements(By.cssSelector("div[id='box-apps-menu-wrapper'] li[id] a span[class='fa-stack fa-lg icon-wrapper']"));
@@ -205,7 +204,7 @@ public class MyFirstClass {
     wd.quit();
   }
 
-  @Test
+  @Test(description = "наглядный пример склеивания и сложения стриговое значение+цифра == склеивание 1цифра+2цифра == сумма")
   public void countTest() {
     int i = 1;
     String g = "1";
