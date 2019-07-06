@@ -249,5 +249,43 @@ public class MyFirstClass {
     Assert.assertTrue(searchResult.size() > 0, "Товара нет такого!");
     wd.quit();
   }
+
+  @Test(description = "Тест по созданию уникального названия для каждого товара")
+  public void newItemWithUniqueName() {
+    adminLogIn();
+    wd.get("http://localhost/litecart/admin/?app=catalog&doc=catalog&category_id=0");
+    List<WebElement> itemsCatalog = wd.findElements(By.xpath("//table[@class='dataTable']//a[contains(text(), 'newDuck')]"));
+    int i = itemsCatalog.size();
+    wd.get("http://localhost/litecart/admin/?category_id=0&app=catalog&doc=edit_product");
+    wd.findElement(By.xpath("//label //input[@value='1']")).click();
+    wd.findElement(By.xpath("//input[@name='name[en]']")).click();
+    wd.findElement(By.xpath("//input[@name='name[en]']")).clear();
+    wd.findElement(By.xpath("//input[@name='name[en]']")).sendKeys("newDuck" + i);
+    wd.findElement(By.xpath("//button[@name='save']")).click();
+    wd.quit();
+  }
+
+  @Test(description = "После каждого запуска создает уникальную утку с уникальным названием и проверят что такая утка отображается 1 в выборке поиска по сайту")
+  public void newUniqueItemAndSearchThisItem() {
+    adminLogIn();
+    wd.get("http://localhost/litecart/admin/?app=catalog&doc=catalog&category_id=0");
+    List<WebElement> itemsCatalog = wd.findElements(By.xpath("//table[@class='dataTable']//a[contains(text(), 'newDuck')]"));
+    int i = itemsCatalog.size();
+    wd.get("http://localhost/litecart/admin/?category_id=0&app=catalog&doc=edit_product");
+    wd.findElement(By.xpath("//label //input[@value='1']")).click();
+    wd.findElement(By.xpath("//input[@name='name[en]']")).click();
+    wd.findElement(By.xpath("//input[@name='name[en]']")).clear();
+    wd.findElement(By.xpath("//input[@name='name[en]']")).sendKeys("newDuck" + i);
+    wd.findElement(By.xpath("//button[@name='save']")).click();
+    wd.get("http://localhost/litecart/en/");
+    wd.findElement(By.xpath("//input[@type='search']")).click();
+    wd.findElement(By.xpath("//input[@type='search']")).clear();
+    wd.findElement(By.xpath("//input[@type='search']")).sendKeys("newDuck" + i);
+    wd.findElement(By.xpath("//input[@type='search']")).sendKeys(Keys.ENTER);
+    List<WebElement> searchResult = wd.findElements(By.xpath("//div[@id='box-product']"));
+    Assert.assertTrue(searchResult.size() == 1, "Товара нет такого!");
+    wd.quit();
+
+  }
   }
 
