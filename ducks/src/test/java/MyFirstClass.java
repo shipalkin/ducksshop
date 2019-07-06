@@ -1,4 +1,5 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -228,7 +229,6 @@ public class MyFirstClass {
               || !wd.findElement(By.xpath(locatorMenu)).getText().equals("Reports")
               || !wd.findElement(By.xpath(locatorMenu)).getText().equals("Tax")
               || !wd.findElement(By.xpath(locatorMenu)).getText().equals("Translations")) {
-
       }
       Assert.assertEquals(wd.findElement(By.xpath(locatorMenu)).getText(), wd.findElement(By.cssSelector("td[id='content'] h1")).getText());
       List<WebElement> menuPodMenu = wd.findElements(By.xpath("//li[contains(@id, 'doc-')]//a"));
@@ -243,6 +243,25 @@ public class MyFirstClass {
       }
       wd.quit();
     }
+
   }
 
-}
+  @Test(description = "Создание нового товара и поиск его по строке поиска")
+  public void newItemAndSearch() {
+    adminLogIn();
+    wd.get("http://localhost/litecart/admin/?category_id=0&app=catalog&doc=edit_product");
+    wd.findElement(By.xpath("//label //input[@value='1']")).click();
+    wd.findElement(By.xpath("//input[@name='name[en]']")).click();
+    wd.findElement(By.xpath("//input[@name='name[en]']")).clear();
+    wd.findElement(By.xpath("//input[@name='name[en]']")).sendKeys("testItem");
+    wd.findElement(By.xpath("//button[@name='save']")).click();
+    wd.get("http://localhost/litecart/en/");
+    wd.findElement(By.xpath("//input[@type='search']")).click();
+    wd.findElement(By.xpath("//input[@type='search']")).clear();
+    wd.findElement(By.xpath("//input[@type='search']")).sendKeys("testItem");
+    wd.findElement(By.xpath("//input[@type='search']")).sendKeys(Keys.ENTER);
+    Assert.assertTrue(wd.findElement(By.xpath("//img[@class='image']")).isDisplayed(), "Товара нет такого!");
+    wd.quit();
+  }
+  }
+
