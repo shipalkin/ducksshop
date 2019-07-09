@@ -15,33 +15,35 @@ import static java.lang.Thread.sleep;
 public class MyFirstClass {
   public WebDriver wd;
 
-  @Test(description = "Метод логина в админку")
-  public void adminLogIn() {
+  public void setTextIntoInput(By locator, String text) {
+    wd.findElement(locator).click();
+    wd.findElement(locator).clear();
+    wd.findElement(locator).sendKeys(text);
+  }
+
+  public void adminLogIn(String login, String password) {
     wd = new ChromeDriver();
     wd.get("http://localhost/litecart/admin/login.php?redirect_url=%2Flitecart%2Fadmin%2F");
-    wd.findElement(By.cssSelector("input[type='text']")).click();
-    wd.findElement(By.cssSelector("input[type='text']")).clear();
-    wd.findElement(By.cssSelector("input[type='text']")).sendKeys("admin");
-    wd.findElement(By.cssSelector("input[type='password']")).click();
-    wd.findElement(By.cssSelector("input[type='password']")).clear();
-    wd.findElement(By.cssSelector("input[type='password']")).sendKeys("admin");
+    setTextIntoInput(By.cssSelector("input[type='text']"), login);
+    setTextIntoInput(By.cssSelector("input[type='password']"), password);
     wd.findElement(By.cssSelector("button")).click();
+  }
+
+  @Test
+  public void logInCheck() {
+    adminLogIn("admin", "admin");
     Assert.assertTrue(wd.findElement(By.cssSelector("div[class='notice success']")).isDisplayed(), "Мы не залогинились!");
+    wd.quit();
   }
 
   @Test(description = "Добавление нового продукта без фотографии")
   public void addNewProductNoImg() {
-    adminLogIn();
+    adminLogIn("admin", "admin");
     wd.get("http://localhost/litecart/admin/?app=catalog&doc=catalog");
     wd.findElement(By.cssSelector("a[href='http://localhost/litecart/admin/?category_id=0&app=catalog&doc=edit_product']")).click();
     wd.findElement(By.cssSelector("input[value='1']")).click();
-    wd.findElement(By.cssSelector("input[name='name[en]']")).click();
-    wd.findElement(By.cssSelector("input[name='name[en]']")).clear();
-    wd.findElement(By.cssSelector("input[name='name[en]']")).sendKeys("NewDuckNoImg");
-    wd.findElement(By.cssSelector("input[name='code']")).click();
-    wd.findElement(By.cssSelector("input[name='code']")).clear();
-    wd.findElement(By.cssSelector("input[name='code']")).sendKeys("123321");
-
+    setTextIntoInput(By.cssSelector("input[name='name[en]']"), "NewDuckNoImg");
+    setTextIntoInput(By.cssSelector("input[name='code']"), "123321");
     wd.findElement(By.cssSelector("button[name='save']")).click();
     wd.quit();
   }
@@ -51,45 +53,22 @@ public class MyFirstClass {
     wd = new ChromeDriver();
     wd.get("http://localhost/litecart/en/");
     wd.findElement(By.cssSelector("a[href='http://localhost/litecart/en/create_account']")).click();
-    wd.findElement(By.cssSelector("input[name='firstname']")).click();
-    wd.findElement(By.cssSelector("input[name='firstname']")).clear();
-    wd.findElement(By.cssSelector("input[name='firstname']")).sendKeys("Shipalka");
-    wd.findElement(By.cssSelector("input[name='lastname']")).click();
-    wd.findElement(By.cssSelector("input[name='lastname']")).clear();
-    wd.findElement(By.cssSelector("input[name='lastname']")).sendKeys("Ivanov");
-    wd.findElement(By.cssSelector("input[name='address1']")).click();
-    wd.findElement(By.cssSelector("input[name='address1']")).clear();
-    wd.findElement(By.cssSelector("input[name='address1']")).sendKeys("Pushkina");
-    wd.findElement(By.cssSelector("input[name='postcode']")).click();
-    wd.findElement(By.cssSelector("input[name='postcode']")).clear();
-    wd.findElement(By.cssSelector("input[name='postcode']")).sendKeys("295000");
-    wd.findElement(By.cssSelector("input[name='city']")).click();
-    wd.findElement(By.cssSelector("input[name='city']")).clear();
-    wd.findElement(By.cssSelector("input[name='city']")).sendKeys("Shipalkacity");
-    wd.findElement(By.cssSelector("input[name='email']")).click();
-    wd.findElement(By.cssSelector("input[name='email']")).clear();
-    wd.findElement(By.cssSelector("input[name='email']")).sendKeys("123456@mail.ru");
-    wd.findElement(By.cssSelector("input[name='phone']")).click();
-    wd.findElement(By.cssSelector("input[name='phone']")).clear();
-    wd.findElement(By.cssSelector("input[name='phone']")).sendKeys("9787777777");
-    wd.findElement(By.cssSelector("input[name='password']")).click();
-    wd.findElement(By.cssSelector("input[name='password']")).clear();
-    wd.findElement(By.cssSelector("input[name='password']")).sendKeys("123456");
-    wd.findElement(By.cssSelector("input[name='confirmed_password']")).click();
-    wd.findElement(By.cssSelector("input[name='confirmed_password']")).clear();
-    wd.findElement(By.cssSelector("input[name='confirmed_password']")).sendKeys("123456");
+    setTextIntoInput(By.cssSelector("input[name='firstname']"), "Shipalka");
+    setTextIntoInput(By.cssSelector("input[name='lastname']"), "Ivanov");
+    setTextIntoInput(By.cssSelector("input[name='address1']"), "Pushkina");
+    setTextIntoInput(By.cssSelector("input[name='postcode']"), "295000");
+    setTextIntoInput(By.cssSelector("input[name='city']"), "Shipalkacity");
+    setTextIntoInput(By.cssSelector("input[name='email']"), "23456@mail.ru");
+    setTextIntoInput(By.cssSelector("input[name='phone']"), "9787777777");
+    setTextIntoInput(By.cssSelector("input[name='password']"), "123456");
+    setTextIntoInput(By.cssSelector("input[name='confirmed_password']"), "123456");
     wd.findElement(By.cssSelector("button[name='create_account']")).click();
     wd.findElement(By.cssSelector("a[href='http://localhost/litecart/en/logout']")).click();
-    wd.findElement(By.cssSelector("input[name='email']")).click();
-    wd.findElement(By.cssSelector("input[name='email']")).clear();
-    wd.findElement(By.cssSelector("input[name='email']")).sendKeys("123456@mail.ru");
-    wd.findElement(By.cssSelector("input[name='password']")).click();
-    wd.findElement(By.cssSelector("input[name='password']")).clear();
-    wd.findElement(By.cssSelector("input[name='password']")).sendKeys("123456");
+    setTextIntoInput(By.cssSelector("input[name='email']"), "123456@mail.ru");
+    setTextIntoInput(By.cssSelector("input[name='password']"), "123456");
     wd.findElement(By.cssSelector("button[name='login']")).click();
     Assert.assertTrue(wd.findElement(By.cssSelector("a[href='http://localhost/litecart/en/logout']")).isDisplayed(), "Мы не залогинились!");
-    wd.quit();
-    adminLogIn();
+    adminLogIn("admin", "admin");
     wd.get("http://localhost/litecart/admin/?app=customers&doc=customers");
     wd.findElement(By.cssSelector("a[title='Edit']")).click();
     wd.findElement(By.cssSelector("button[name='delete']")).click();
@@ -144,7 +123,7 @@ public class MyFirstClass {
   @Test(description = "Проверка наличия всех элементов бокового меню")
   public void firstHomeWork0() {
     wd = new ChromeDriver();
-    adminLogIn();
+    adminLogIn("admin", "admin");
     List<WebElement> elements = wd.findElements(By.cssSelector("div[id='box-apps-menu-wrapper'] li[id]"));
     Assert.assertEquals(elements.size(), 17, "Элементов не 17, ошибка!");
     ArrayList<String> menu = new ArrayList<String>(Arrays.asList("Appearence", "Catalog", "Countries", "Currencies", "Customers", "Geo Zones", "Languages",
@@ -157,7 +136,7 @@ public class MyFirstClass {
 
   @Test(description = "Наличие всех строк в таблице статистики таблица на ГС админки http://localhost/litecart/admin/")
   public void firstHomeWork1() {
-    adminLogIn();
+    adminLogIn("admin", "admin");
     List<WebElement> statistic = wd.findElements(By.cssSelector("li[id='widget-stats'] tr[class]"));
     Assert.assertEquals(statistic.size(), 7);
     ArrayList<String> stat = new ArrayList<String>(Arrays.asList("Statistics", "Total Sales: $7.20", "Total Sales 2019: $7.20", "Total Sales July: $0.00", "Average Order Amount: $7.20", "Number of Customers: 0", "Number of Products: 7"));
@@ -169,7 +148,7 @@ public class MyFirstClass {
 
   @Test(description = "проклацивание каждого элемента бокового меню и проверка наличия у них загловоков")
   public void secondHomeWork() throws InterruptedException {
-    adminLogIn();
+    adminLogIn("admin", "admin");
     List<WebElement> menuItemlist = wd.findElements(By.cssSelector("div[id='box-apps-menu-wrapper'] li[id] a span[class='fa-stack fa-lg icon-wrapper']"));
     Assert.assertEquals(menuItemlist.size(), 17, "Пунктов меньше 17");
     for (int i = 1; i <= menuItemlist.size(); i++) {
@@ -201,7 +180,7 @@ public class MyFirstClass {
 
   @Test(description = "Проверка соответствия названия пункта меню - заголовку страницы")
   public void secondHomeWork1() throws InterruptedException {
-    adminLogIn();
+    adminLogIn("admin", "admin");
     List<WebElement> menuItemlist = wd.findElements(By.cssSelector("div[id='box-apps-menu-wrapper'] li[id] a span[class='fa-stack fa-lg icon-wrapper']"));
     Assert.assertEquals(menuItemlist.size(), 17, "Пунктов меньше 17");
     for (int i = 1; i <= menuItemlist.size(); i++) {
@@ -233,17 +212,13 @@ public class MyFirstClass {
 
   @Test(description = "Создание нового товара и поиск его по строке поиска")
   public void newItemAndSearch() {
-    adminLogIn();
+    adminLogIn("admin", "admin");
     wd.get("http://localhost/litecart/admin/?category_id=0&app=catalog&doc=edit_product");
     wd.findElement(By.xpath("//label //input[@value='1']")).click();
-    wd.findElement(By.xpath("//input[@name='name[en]']")).click();
-    wd.findElement(By.xpath("//input[@name='name[en]']")).clear();
-    wd.findElement(By.xpath("//input[@name='name[en]']")).sendKeys("testItem");
+    setTextIntoInput(By.xpath("//input[@name='name[en]']"), "testItem");
     wd.findElement(By.xpath("//button[@name='save']")).click();
     wd.get("http://localhost/litecart/en/");
-    wd.findElement(By.xpath("//input[@type='search']")).click();
-    wd.findElement(By.xpath("//input[@type='search']")).clear();
-    wd.findElement(By.xpath("//input[@type='search']")).sendKeys("testItem");
+    setTextIntoInput(By.xpath("//input[@type='search']"), "testItem");
     wd.findElement(By.xpath("//input[@type='search']")).sendKeys(Keys.ENTER);
     List<WebElement> searchResult = wd.findElements(By.xpath("//div[@class='name']"));
     Assert.assertTrue(searchResult.size() > 0, "Товара нет такого!");
@@ -252,35 +227,29 @@ public class MyFirstClass {
 
   @Test(description = "Тест по созданию уникального названия для каждого товара")
   public void newItemWithUniqueName() {
-    adminLogIn();
+    adminLogIn("admin", "admin");
     wd.get("http://localhost/litecart/admin/?app=catalog&doc=catalog&category_id=0");
     List<WebElement> itemsCatalog = wd.findElements(By.xpath("//table[@class='dataTable']//a[contains(text(), 'newDuck')]"));
     int i = itemsCatalog.size();
     wd.get("http://localhost/litecart/admin/?category_id=0&app=catalog&doc=edit_product");
     wd.findElement(By.xpath("//label //input[@value='1']")).click();
-    wd.findElement(By.xpath("//input[@name='name[en]']")).click();
-    wd.findElement(By.xpath("//input[@name='name[en]']")).clear();
-    wd.findElement(By.xpath("//input[@name='name[en]']")).sendKeys("newDuck" + i);
+    setTextIntoInput(By.xpath("//input[@name='name[en]']"), "newDuck" + i);
     wd.findElement(By.xpath("//button[@name='save']")).click();
     wd.quit();
   }
 
   @Test(description = "После каждого запуска создает уникальную утку с уникальным названием и проверят что такая утка отображается 1 в выборке поиска по сайту")
   public void newUniqueItemAndSearchThisItem() {
-    adminLogIn();
+    adminLogIn("admin", "admin");
     wd.get("http://localhost/litecart/admin/?app=catalog&doc=catalog&category_id=0");
     List<WebElement> itemsCatalog = wd.findElements(By.xpath("//table[@class='dataTable']//a[contains(text(), 'newDuck')]"));
     int i = itemsCatalog.size();
     wd.get("http://localhost/litecart/admin/?category_id=0&app=catalog&doc=edit_product");
     wd.findElement(By.xpath("//label //input[@value='1']")).click();
-    wd.findElement(By.xpath("//input[@name='name[en]']")).click();
-    wd.findElement(By.xpath("//input[@name='name[en]']")).clear();
-    wd.findElement(By.xpath("//input[@name='name[en]']")).sendKeys("newDuck" + i);
+    setTextIntoInput(By.xpath("//input[@name='name[en]']"), "newDuck" + i);
     wd.findElement(By.xpath("//button[@name='save']")).click();
     wd.get("http://localhost/litecart/en/");
-    wd.findElement(By.xpath("//input[@type='search']")).click();
-    wd.findElement(By.xpath("//input[@type='search']")).clear();
-    wd.findElement(By.xpath("//input[@type='search']")).sendKeys("newDuck" + i);
+    setTextIntoInput(By.xpath("//input[@type='search']"), "newDuck" + i);
     wd.findElement(By.xpath("//input[@type='search']")).sendKeys(Keys.ENTER);
     List<WebElement> searchResult = wd.findElements(By.xpath("//div[@id='box-product']"));
     Assert.assertTrue(searchResult.size() == 1, "Товара нет такого!");
