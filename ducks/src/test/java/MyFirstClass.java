@@ -254,7 +254,24 @@ public class MyFirstClass {
     List<WebElement> searchResult = wd.findElements(By.xpath("//div[@id='box-product']"));
     Assert.assertTrue(searchResult.size() == 1, "Товара нет такого!");
     wd.quit();
+  }
 
+  @Test(description = "Создает товар заполняя несколько инпутов, затем ищет его и сверяяет что нашет тот который искал, и товар содержит все те поля которые есть")
+  public void newItemSearchThisItemAndEqualsStringov() {
+    adminLogIn("admin", "admin");
+    String productName = "newDucknew";
+    String productDescription = "newDucknewKeywords";
+    wd.get("http://localhost/litecart/admin/?category_id=0&app=catalog&doc=edit_product");
+    wd.findElement(By.xpath("//label //input[@value='1']")).click();
+    setTextIntoInput(By.xpath("//input[@name='name[en]']"), productName);
+    wd.findElement(By.xpath("//a[@href='#tab-information']")).click();
+    setTextIntoInput(By.xpath("//div[@class='trumbowyg-editor']"), productDescription);
+    wd.get("http://localhost/litecart/en/");
+    setTextIntoInput(By.xpath("//input[@type='search']"), "newDucknew");
+    wd.findElement(By.xpath("//input[@type='search']")).sendKeys(Keys.ENTER);
+    Assert.assertEquals(wd.findElement(By.xpath("//h1")).getText(), productName);
+    Assert.assertEquals(wd.findElement(By.xpath("//div[@class='tab']")).getText(), productDescription);
+    wd.quit();
   }
   }
 
