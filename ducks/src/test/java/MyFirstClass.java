@@ -267,7 +267,7 @@ public class MyFirstClass {
     wd.findElement(By.xpath("//a[@href='#tab-information']")).click();
     setTextIntoInput(By.xpath("//div[@class='trumbowyg-editor']"), productDescription);
     wd.get("http://localhost/litecart/en/");
-    setTextIntoInput(By.xpath("//input[@type='search']"), "newDucknew");
+    setTextIntoInput(By.xpath("//input[@type='search']"), productName);
     wd.findElement(By.xpath("//input[@type='search']")).sendKeys(Keys.ENTER);
     Assert.assertEquals(wd.findElement(By.xpath("//h1")).getText(), productName);
     Assert.assertEquals(wd.findElement(By.xpath("//div[@class='tab']")).getText(), productDescription);
