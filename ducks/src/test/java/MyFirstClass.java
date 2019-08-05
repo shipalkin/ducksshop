@@ -273,5 +273,28 @@ public class MyFirstClass {
     Assert.assertEquals(wd.findElement(By.xpath("//div[@class='tab']")).getText(), productDescription);
     wd.quit();
   }
+
+  @Test(description = "Создается пользователь, ищется, Ассертятся все поля созданного пользователя")
+  public void newUserSearchThisUserAndAssertInputs() {
+    adminLogIn("admin", "admin");
+    String userName = "Nikitka";
+    String userPassword = "Nikita";
+    String userDateAndTimeBlockedUntil = "14.05.199333 14:55";
+    String userDateAndTimeExpires = "14.05.199333 15:55";
+    wd.get("http://localhost/litecart/admin/?app=users&doc=edit_user&page=1");
+    wd.findElement(By.xpath("//input[@name='status']")).click();
+    setTextIntoInput(By.xpath("//input[@name='username']"), userName);
+    setTextIntoInput(By.xpath("//input[@name='password']"), userPassword);
+    setTextIntoInput(By.xpath("//input[@name='confirmed_password']"), userPassword);
+    wd.findElement(By.xpath("//input[@name='date_blocked']")).sendKeys(userDateAndTimeBlockedUntil);
+    wd.findElement(By.xpath("//input[@name='date_expires']")).sendKeys(userDateAndTimeExpires);
+    wd.findElement(By.xpath("//button[@name='save']")).click();
+    wd.findElement(By.xpath("//tbody //a[contains(text(), 'Nikitka')]")).click();
+    Assert.assertEquals(wd.findElement(By.xpath("//input[@name='username']")).getAttribute("Value"), userName);
+    Assert.assertEquals(wd.findElement(By.xpath("//input[@name='date_blocked']")).getAttribute("Value"), userDateAndTimeBlockedUntil);
+    Assert.assertEquals(wd.findElement(By.xpath("//input[@name='date_expires']")).getAttribute("Value"), userDateAndTimeExpires);
+    // ой вэй короче поля не сохранябтся с датами, но зато вроде разобрался как работать с полями типа "input type="datetime-local""
+    wd.quit();
+  }
   }
 
