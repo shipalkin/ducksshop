@@ -274,8 +274,8 @@ public class MyFirstClass {
     wd.quit();
   }
 
-  @Test(description = "Создается пользователь, ищется, Ассертятся все поля созданного пользователя")
-  public void newUserSearchThisUserAndAssertInputs() {
+  @Test(description = "Создается пользователь В админке, ищется, Ассертятся все поля созданного пользователя")
+  public void newAdminUserSearchThisUserAndAssertInputs() {
     adminLogIn("admin", "admin");
     String userName = "Nikitka";
     String userPassword = "Nikita";
@@ -294,6 +294,52 @@ public class MyFirstClass {
     Assert.assertEquals(wd.findElement(By.xpath("//input[@name='date_blocked']")).getAttribute("Value"), userDateAndTimeBlockedUntil);
     Assert.assertEquals(wd.findElement(By.xpath("//input[@name='date_expires']")).getAttribute("Value"), userDateAndTimeExpires);
     // ой вэй короче поля не сохранябтся с датами, но зато вроде разобрался как работать с полями типа "input type="datetime-local""
+    wd.quit();
+  }
+
+  @Test(description = "Создается пользак(покупатель), затем сверяются заполненные поля на корректность сведений")
+  public void newCustomerAndAssertHisInputs() {
+    adminLogIn("admin", "admin");
+    String code = "295051";
+    String emailAddress = "privet@mai.ru";
+    String taxId = "100000";
+    String company = "Doka2";
+    String firstName = "Shipalka";
+    String lastName = "Shipalkinov";
+    String address1 = "lenina str.";
+    String address2 = "leksina str.";
+    String city = "Sain Simferopol";
+    String postCode = "295000";
+    String phone = "80652111111";
+    String mobilePhone = "89992222222";
+    wd.get("http://localhost/litecart/admin/?app=customers&doc=edit_customer&page=1");
+    setTextIntoInput(By.xpath("//input[@name='code']"), code);
+    setTextIntoInput(By.xpath("//input[@name='email']"), emailAddress);
+    setTextIntoInput(By.xpath("//input[@name='tax_id']"), taxId);
+    setTextIntoInput(By.xpath("//input[@name='company']"), company);
+    setTextIntoInput(By.xpath("//input[@name='firstname']"), firstName);
+    setTextIntoInput(By.xpath("//input[@name='lastname']"), lastName);
+    setTextIntoInput(By.xpath("//input[@name='address1']"), address1);
+    setTextIntoInput(By.xpath("//input[@name='address2']"), address2);
+    setTextIntoInput(By.xpath("//input[@name='city']"), city);
+    setTextIntoInput(By.xpath("//input[@name='postcode']"), postCode);
+    setTextIntoInput(By.xpath("//input[@name='phone']"), phone);
+    setTextIntoInput(By.xpath("//input[@name='mobile']"), mobilePhone);
+    wd.findElement(By.xpath("//input[@name='new_password']")).sendKeys("123123");
+    wd.findElement(By.xpath("//button[@name='save']")).click();
+    wd.findElement(By.xpath("//table //a[contains(text(), 'Shipalka Shipalkinov')]")).click();
+    Assert.assertEquals(wd.findElement(By.xpath("//input[@name='code']")).getAttribute("Value"), code);
+    Assert.assertEquals(wd.findElement(By.xpath("//input[@name='email']")).getAttribute("Value"), emailAddress);
+    Assert.assertEquals(wd.findElement(By.xpath("//input[@name='tax_id']")).getAttribute("Value"), taxId);
+    Assert.assertEquals(wd.findElement(By.xpath("//input[@name='company']")).getAttribute("Value"), company);
+    Assert.assertEquals(wd.findElement(By.xpath("//input[@name='firstname']")).getAttribute("Value"), firstName);
+    Assert.assertEquals(wd.findElement(By.xpath("//input[@name='lastname']")).getAttribute("Value"), lastName);
+    Assert.assertEquals(wd.findElement(By.xpath("//input[@name='address1']")).getAttribute("Value"), address1);
+    Assert.assertEquals(wd.findElement(By.xpath("//input[@name='address2']")).getAttribute("Value"), address2);
+    Assert.assertEquals(wd.findElement(By.xpath("//input[@name='city']")).getAttribute("Value"), city);
+    Assert.assertEquals(wd.findElement(By.xpath("//input[@name='postcode']")).getAttribute("Value"), postCode);
+    Assert.assertEquals(wd.findElement(By.xpath("//input[@name='phone']")).getAttribute("Value"), phone);
+    Assert.assertEquals(wd.findElement(By.xpath("//input[@name='mobile']")).getAttribute("Value"), mobilePhone);
     wd.quit();
   }
   }
