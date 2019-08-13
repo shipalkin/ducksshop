@@ -300,6 +300,7 @@ public class MyFirstClass {
   @Test(description = "Создается пользак(покупатель), затем сверяются заполненные поля на корректность сведений")
   public void newCustomerAndAssertHisInputs() {
     adminLogIn("admin", "admin");
+    //UserData createdUser = new UserData();
     String code = "295051";
     String emailAddress = "privet@mai.ru";
     String taxId = "100000";
