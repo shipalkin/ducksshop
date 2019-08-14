@@ -343,5 +343,50 @@ public class MyFirstClass {
     Assert.assertEquals(wd.findElement(By.xpath("//input[@name='mobile']")).getAttribute("Value"), mobilePhone);
     wd.quit();
   }
+
+  @Test
+  public void tryCreateAlreadyExistedCustomer() {
+    adminLogIn("admin", "admin");
+    wd.get("http://localhost/litecart/admin/?app=customers&doc=customers"); // переписать через .click();
+    wd.findElement(By.xpath("//tr[@class='row'][1] //td[5]//a[1]")).click();
+    UserData existedCustomer = getUserDataFromAdminPanel();
+    wd.get("http://localhost/litecart/en/");
+    wd.findElement(By.cssSelector("form[name='login_form'] a[href*='create_account']")).click();
+    fillRegistrationForm(existedCustomer);
+    wd.findElement(By.xpath("//input[@name='password']")).sendKeys("123123");
+    wd.findElement(By.xpath("//input[@name='confirmed_password']")).sendKeys("123123");
+    wd.findElement(By.xpath("//button[@type='submit']")).click();
+    Assert.assertTrue(wd.findElement(By.xpath("//div[@class='notice errors']")).isDisplayed(),
+            "Пользователя создать невозможно, такой пользователь уже зарегистрирован");
+    wd.quit();
+  }
+
+  private UserData getUserDataFromAdminPanel() {
+    UserData existedUser = new UserData();
+    existedUser.setTaxId(wd.findElement(By.xpath("//input[@name='tax_id']")).getAttribute("Value"));
+    existedUser.setCompany(wd.findElement(By.xpath("//input[@name='company']")).getAttribute("Value"));
+    existedUser.setFirstName(wd.findElement(By.xpath("//input[@name='firstname']")).getAttribute("Value"));
+    existedUser.setLastName(wd.findElement(By.xpath("//input[@name='lastname']")).getAttribute("Value"));
+    existedUser.setAddress1(wd.findElement(By.xpath("//input[@name='address1']")).getAttribute("Value"));
+    existedUser.setAddress2(wd.findElement(By.xpath("//input[@name='address2']")).getAttribute("Value"));
+    existedUser.setPostCode(wd.findElement(By.xpath("//input[@name='postcode']")).getAttribute("Value"));
+    existedUser.setCity(wd.findElement(By.xpath("//input[@name='city']")).getAttribute("Value"));
+    existedUser.setEmailAddress(wd.findElement(By.xpath("//input[@name='email']")).getAttribute("Value"));
+    existedUser.setPhone(wd.findElement(By.xpath("//input[@name='phone']")).getAttribute("Value"));
+    return existedUser;
+  }
+
+  private void fillRegistrationForm(UserData registration) {
+    wd.findElement(By.xpath("//input[@name='tax_id']")).sendKeys(registration.getTaxId());
+    wd.findElement(By.xpath("//input[@name='company']")).sendKeys(registration.getCompany());
+    wd.findElement(By.xpath("//input[@name='firstname']")).sendKeys(registration.getFirstName());
+    wd.findElement(By.xpath("//input[@name='lastname']")).sendKeys(registration.getLastName());
+    wd.findElement(By.xpath("//input[@name='address1']")).sendKeys(registration.getAddress1());
+    wd.findElement(By.xpath("//input[@name='address2']")).sendKeys(registration.getAddress2());
+    wd.findElement(By.xpath("//input[@name='postcode']")).sendKeys(registration.getPostCode());
+    wd.findElement(By.xpath("//input[@name='city']")).sendKeys(registration.getCity());
+    wd.findElement(By.xpath("//input[@name='email']")).sendKeys(registration.getEmailAddress());
+    wd.findElement(By.xpath("//input[@name='phone']")).sendKeys(registration.getPhone());
+  }
   }
 
