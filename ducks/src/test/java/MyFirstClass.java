@@ -388,5 +388,67 @@ public class MyFirstClass {
     wd.findElement(By.xpath("//input[@name='email']")).sendKeys(registration.getEmailAddress());
     wd.findElement(By.xpath("//input[@name='phone']")).sendKeys(registration.getPhone());
   }
+
+  @Test(description = "")
+  public void newCustomerSecondTest() {
+    adminLogIn("admin", "admin");
+    UserData createdUser = new UserData();
+    createdUser.setCode("2951051");
+    createdUser.setEmailAddress("privset@mai.ru");
+    createdUser.setTaxId("1001000");
+    createdUser.setCompany("Doksa2");
+    createdUser.setFirstName("Shipsalka");
+    createdUser.setLastName("Shipsalkinov");
+    createdUser.setAddress1("lensina str.");
+    createdUser.setAddress2("lekssina str.");
+    createdUser.setCity("Saints Simferopol");
+    createdUser.setPostCode("295001");
+    createdUser.setPhone("80652111222");
+    createdUser.setMobilePhone("8999111222");
+    wd.get("http://localhost/litecart/admin/?app=customers&doc=edit_customer&page=1");
+    fillUserDataInAdmin(createdUser);
+    System.out.println(createdUser);
+    wd.findElement(By.xpath("//input[@name='new_password']")).sendKeys("123123");
+    wd.findElement(By.xpath("//button[@name='save']")).click();
+    wd.findElement(By.xpath("//table //a[contains(text(), 'Shipsalka Shipsalkinov')]")).click();
+    UserData existedUser = getExistedUserDate();
+    System.out.println(existedUser);
+    Assert.assertEquals(createdUser, existedUser);
+    wd.quit();
+  }
+
+  private UserData getExistedUserDate() {
+    UserData existedUser = new UserData();
+    existedUser.setCode(wd.findElement(By.xpath("//input[@name='code']")).getAttribute("Value"));
+    existedUser.setEmailAddress(wd.findElement(By.xpath("//input[@name='email']")).getAttribute("Value"));
+    existedUser.setTaxId(wd.findElement(By.xpath("//input[@name='tax_id']")).getAttribute("Value"));
+    existedUser.setCompany(wd.findElement(By.xpath("//input[@name='company']")).getAttribute("Value"));
+    existedUser.setFirstName(wd.findElement(By.xpath("//input[@name='firstname']")).getAttribute("Value"));
+    existedUser.setLastName(wd.findElement(By.xpath("//input[@name='lastname']")).getAttribute("Value"));
+    existedUser.setAddress1(wd.findElement(By.xpath("//input[@name='address1']")).getAttribute("Value"));
+    existedUser.setAddress2(wd.findElement(By.xpath("//input[@name='address2']")).getAttribute("Value"));
+    existedUser.setCity(wd.findElement(By.xpath("//input[@name='city']")).getAttribute("Value"));
+    existedUser.setPostCode(wd.findElement(By.xpath("//input[@name='postcode']")).getAttribute("Value"));
+    existedUser.setPhone(wd.findElement(By.xpath("//input[@name='phone']")).getAttribute("Value"));
+    existedUser.setMobilePhone(wd.findElement(By.xpath("//input[@name='mobile']")).getAttribute("Value"));
+    return existedUser;
+  }
+
+  private void fillUserDataInAdmin(UserData createdUser) {
+    setTextIntoInput(By.xpath("//input[@name='code']"), createdUser.getCode());
+    setTextIntoInput(By.xpath("//input[@name='email']"), createdUser.getEmailAddress());
+    setTextIntoInput(By.xpath("//input[@name='tax_id']"), createdUser.getTaxId());
+    setTextIntoInput(By.xpath("//input[@name='company']"), createdUser.getCompany());
+    setTextIntoInput(By.xpath("//input[@name='firstname']"), createdUser.getFirstName());
+    setTextIntoInput(By.xpath("//input[@name='lastname']"), createdUser.getLastName());
+    setTextIntoInput(By.xpath("//input[@name='address1']"), createdUser.getAddress1());
+    setTextIntoInput(By.xpath("//input[@name='address2']"), createdUser.getAddress2());
+    setTextIntoInput(By.xpath("//input[@name='city']"), createdUser.getCity());
+    setTextIntoInput(By.xpath("//input[@name='postcode']"), createdUser.getPostCode());
+    setTextIntoInput(By.xpath("//input[@name='phone']"), createdUser.getPhone());
+    setTextIntoInput(By.xpath("//input[@name='mobile']"), createdUser.getMobilePhone());
+
+  }
+
   }
 

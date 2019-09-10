@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class UserData {
   private String code;
   private String emailAddress;
@@ -102,6 +104,48 @@ public class UserData {
 
   public String getMobilePhone() {
     return mobilePhone;
+  }
+
+  @Override
+  public String toString() {
+    return "UserData{" +
+            "code='" + code + '\'' +
+            ", emailAddress='" + emailAddress + '\'' +
+            ", taxId='" + taxId + '\'' +
+            ", company='" + company + '\'' +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", address1='" + address1 + '\'' +
+            ", address2='" + address2 + '\'' +
+            ", city='" + city + '\'' +
+            ", postCode='" + postCode + '\'' +
+            ", phone='" + phone + '\'' +
+            ", mobilePhone='" + mobilePhone + '\'' +
+            '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    UserData userData = (UserData) o;
+    return Objects.equals(code, userData.code) &&
+            Objects.equals(emailAddress, userData.emailAddress) &&
+            Objects.equals(taxId, userData.taxId) &&
+            Objects.equals(company, userData.company) &&
+            Objects.equals(firstName, userData.firstName) &&
+            Objects.equals(lastName, userData.lastName) &&
+            Objects.equals(address1, userData.address1) &&
+            Objects.equals(address2, userData.address2) &&
+            Objects.equals(city, userData.city) &&
+            Objects.equals(postCode, userData.postCode) &&
+            Objects.equals(phone, userData.phone) &&
+            Objects.equals(mobilePhone, userData.mobilePhone);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(code, emailAddress, taxId, company, firstName, lastName, address1, address2, city, postCode, phone, mobilePhone);
   }
 
   public void setMobilePhone(String mobilePhone) {
