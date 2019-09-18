@@ -126,7 +126,7 @@ public class MyFirstClass {
     adminLogIn("admin", "admin");
     List<WebElement> elements = wd.findElements(By.cssSelector("div[id='box-apps-menu-wrapper'] li[id]"));
     Assert.assertEquals(elements.size(), 17, "Элементов не 17, ошибка!");
-    ArrayList<String> menu = new ArrayList<String>(Arrays.asList("Appearence", "Catalog", "Countries", "Currencies", "Customers", "Geo Zones", "Languages",
+    ArrayList<String> menu = new ArrayList<>(Arrays.asList("Appearence", "Catalog", "Countries", "Currencies", "Customers", "Geo Zones", "Languages",
             "Modules", "Orders", "Pages", "Reports", "Settings", "Slides", "Tax", "Translations", "Users", "vQmods"));
     for (int i = 0; i < elements.size(); i++) {
       Assert.assertEquals(elements.get(i).getText(), menu.get(i), "количество элементов не совпадает с эталонным!");
@@ -139,7 +139,7 @@ public class MyFirstClass {
     adminLogIn("admin", "admin");
     List<WebElement> statistic = wd.findElements(By.cssSelector("li[id='widget-stats'] tr[class]"));
     Assert.assertEquals(statistic.size(), 7);
-    ArrayList<String> stat = new ArrayList<String>(Arrays.asList("Statistics", "Total Sales: $7.20", "Total Sales 2019: $7.20", "Total Sales July: $0.00", "Average Order Amount: $7.20", "Number of Customers: 0", "Number of Products: 7"));
+    ArrayList<String> stat = new ArrayList<>(Arrays.asList("Statistics", "Total Sales: $7.20", "Total Sales 2019: $7.20", "Total Sales July: $0.00", "Average Order Amount: $7.20", "Number of Customers: 0", "Number of Products: 7"));
     for (int i = 0; i < statistic.size(); i++) {
       Assert.assertEquals(statistic.get(i).getText(), stat.get(i));
     }
@@ -347,7 +347,8 @@ public class MyFirstClass {
   @Test
   public void tryCreateAlreadyExistedCustomer() {
     adminLogIn("admin", "admin");
-    wd.get("http://localhost/litecart/admin/?app=customers&doc=customers"); // переписать через .click();
+    wd.findElement(By.xpath("//span[contains(text(), 'Customers')]")).click();
+    //wd.get("http://localhost/litecart/admin/?app=customers&doc=customers"); // переписать через .click();
     wd.findElement(By.xpath("//tr[@class='row'][1] //td[5]//a[1]")).click();
     UserData existedCustomer = getUserDataFromAdminPanel();
     wd.get("http://localhost/litecart/en/");
@@ -389,7 +390,7 @@ public class MyFirstClass {
     wd.findElement(By.xpath("//input[@name='phone']")).sendKeys(registration.getPhone());
   }
 
-  @Test(description = "")
+  @Test(description = "переписать")
   public void newCustomerSecondTest() {
     adminLogIn("admin", "admin");
     UserData createdUser = new UserData();
