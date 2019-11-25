@@ -348,7 +348,6 @@ public class MyFirstClass {
   public void tryCreateAlreadyExistedCustomer() {
     adminLogIn("admin", "admin");
     wd.findElement(By.xpath("//span[contains(text(), 'Customers')]")).click();
-    //wd.get("http://localhost/litecart/admin/?app=customers&doc=customers"); // переписать через .click();
     wd.findElement(By.xpath("//tr[@class='row'][1] //td[5]//a[1]")).click();
     UserData existedCustomer = getUserDataFromAdminPanel();
     wd.get("http://localhost/litecart/en/");
