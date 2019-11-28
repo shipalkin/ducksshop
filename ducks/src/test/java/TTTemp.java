@@ -12,6 +12,18 @@ import java.util.concurrent.TimeUnit;
 public class TTTemp {
   public WebDriver driver;
 
+  public void developLogInAM() {
+    driver = new ChromeDriver();
+    driver.get("https://tt-develop.quality-lab.ru");
+    driver.findElement(By.xpath("//input[@id='username']")).click();
+    driver.findElement(By.xpath("//input[@id='username']")).clear();
+    driver.findElement(By.xpath("//input[@id='username']")).sendKeys("Автотестам");
+    driver.findElement(By.xpath("//input[@id='password']")).click();
+    driver.findElement(By.xpath("//input[@id='password']")).clear();
+    driver.findElement(By.xpath("//input[@id='password']")).sendKeys("123456");
+    driver.findElement(By.xpath("//input[@id='_submit']")).click();
+  }
+
   public void developLogInManager() {
     driver = new ChromeDriver();
     driver.get("https://tt-develop.quality-lab.ru");
@@ -73,19 +85,80 @@ public class TTTemp {
   @Test(description = "Тест проверяет наличие элементов бокового меню для роли Менеджер-админ")
   public void managerSideBarCheck() {
     developLogInManager();
-    List<WebElement> sidebars = driver.findElements(By.xpath("//a[@class='m-menu__link m-menu__toggle']"));
-    ArrayList<String> stringsidebars = new ArrayList<>();
-    stringsidebars.add("Пользователи");
-    stringsidebars.add("Проекты");
-    stringsidebars.add("Отчеты");
-    stringsidebars.add("KPI");
-    stringsidebars.add("Активности");
-    stringsidebars.add("Графики работы");
-    stringsidebars.add("Моя зарплата");
-    stringsidebars.add("Благодарности");
-    stringsidebars.add("Навыки");
-    stringsidebars.add("Карта ЛК");
+    driver.findElement(By.id("m_aside_left_minimize_toggle")).click();
+    List<WebElement> sidebars = driver.findElements(By.xpath("//a[@class='m-menu__link m-menu__toggle']//span[@class='m-menu__link-wrap']//span[@class='m-menu__link-text']"));
+    ArrayList<String> stringSideBars = new ArrayList<>();
+    stringSideBars.add("Пользователи");
+    stringSideBars.add("Проекты");
+    stringSideBars.add("Отчеты");
+    stringSideBars.add("KPI");
+    stringSideBars.add("Активности");
+    stringSideBars.add("Графики работы");
+    stringSideBars.add("Моя зарплата");
+    stringSideBars.add("Благодарности");
+    stringSideBars.add("Навыки");
+    stringSideBars.add("Карта ЛК");
     Assert.assertEquals(sidebars.size(), 10);
+    List<String> actualSideBars = new ArrayList<>();
+    for (WebElement text : sidebars) {
+      actualSideBars.add(text.getText());
+    }
+    Assert.assertEquals(actualSideBars, stringSideBars);
+    driver.quit();
+  }
+
+  @Test(description = "Тест проверяет наличие элементов меню в профиле для роли Менеджер-админ")
+  public void managerProfileMenu() {
+    developLogInManager();
+    driver.get("https://tt-develop.quality-lab.ru/user/352/show/profile");
+    List<WebElement> managerProfileMenu = driver.findElements(By.xpath("//div[@class='m-stack__item m--pull-right']//li[@class='nav-item m-tabs__item']"));
+    ArrayList<String> stringsProfileMenu = new ArrayList<>();
+    stringsProfileMenu.add("Профиль");
+    stringsProfileMenu.add("Навыки");
+    stringsProfileMenu.add("Опыт работы");
+    stringsProfileMenu.add("Проекты");
+    stringsProfileMenu.add("Аккаунт-менеджмент");
+    stringsProfileMenu.add("Образование");
+    stringsProfileMenu.add("Иностранные языки");
+    stringsProfileMenu.add("Учетная запись");
+    stringsProfileMenu.add("Связи");
+    Assert.assertTrue(driver.findElement(By.xpath("//a[@class='btn btn-brand m-btn']")).isDisplayed());
+    ArrayList<String> actualProfileMenu = new ArrayList<>();
+    for (WebElement menu : managerProfileMenu) {
+      actualProfileMenu.add(menu.getText());
+    }
+    Assert.assertEquals(actualProfileMenu, stringsProfileMenu);
+    driver.quit();
+  }
+
+  @Test(description = "Тест проверяет наличие элементов меню в профиле для группы АМ роли Пользователь")
+  public void amUserProfileMenu() {
+    developLogInAM();
+    driver.get("https://tt-develop.quality-lab.ru/user/353/show/profile");
+    List<WebElement> amProfileMenu = driver.findElements(By.xpath("//div[@class='m-stack__item m--pull-right']//li[@class='nav-item m-tabs__item']"));
+    ArrayList<String> stringProfileMenu = new ArrayList<>();
+    stringProfileMenu.add("Профиль");
+    stringProfileMenu.add("Навыки");
+    stringProfileMenu.add("Опыт работы");
+    stringProfileMenu.add("Проекты");
+    stringProfileMenu.add("Аккаунт-менеджмент");
+    stringProfileMenu.add("Образование");
+    stringProfileMenu.add("Иностранные языки");
+    stringProfileMenu.add("Связи");
+    ArrayList<String> actualProfileMenu = new ArrayList<>();
+    for (WebElement menu : amProfileMenu) {
+      actualProfileMenu.add(menu.getText());
+    }
+    Assert.assertEquals(actualProfileMenu, stringProfileMenu);
+    driver.quit();
+  }
+
+  @Test(description = "Проверка цвета элемента меню профиля 'Профиль' и его подчеркивания")
+  public void colorOfProfileInUserProdile() {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    Assert.assertEquals(driver.findElement(By.xpath("//ul[@class='nav nav-tabs  m-tabs-line m-tabs-line--2x m-tabs-line--success']//a[@class='nav-link m-tabs__link active']")).getCssValue("color"), "rgba(114, 110, 201, 1)");
+    Assert.assertEquals(driver.findElement(By.xpath("//ul[@class='nav nav-tabs  m-tabs-line m-tabs-line--2x m-tabs-line--success']//a[@class='nav-link m-tabs__link active']")).getCssValue("border-bottom"), "4px solid rgb(114, 110, 201)");
     driver.quit();
   }
 }
