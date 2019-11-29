@@ -154,11 +154,50 @@ public class TTTemp {
   }
 
   @Test(description = "Проверка цвета элемента меню профиля 'Профиль' и его подчеркивания")
-  public void colorOfProfileInUserProdile() {
+  public void colorOfProfileInUserProfile() {
     developLogIn();
     driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
     Assert.assertEquals(driver.findElement(By.xpath("//ul[@class='nav nav-tabs  m-tabs-line m-tabs-line--2x m-tabs-line--success']//a[@class='nav-link m-tabs__link active']")).getCssValue("color"), "rgba(114, 110, 201, 1)");
     Assert.assertEquals(driver.findElement(By.xpath("//ul[@class='nav nav-tabs  m-tabs-line m-tabs-line--2x m-tabs-line--success']//a[@class='nav-link m-tabs__link active']")).getCssValue("border-bottom"), "4px solid rgb(114, 110, 201)");
     driver.quit();
   }
+
+  @Test(description = "При наведении на фотографию в профиле, курсор меняет вид на руку(поинтер)")
+  public void pointerCursorInAvatarInProfile() {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    Assert.assertEquals(driver.findElement(By.xpath("//img[@class='avatar']")).getCssValue("cursor"), "pointer");
+    driver.quit();
+  }
+
+  @Test(description = "Кнопка “Сформировать резюме” (фиолетовая заливка) #716ACA")
+  public void buttonCreateResumeIsPurpleColor() {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    Assert.assertEquals(driver.findElement(By.xpath("//a[@class='btn btn-brand m-btn']")).getCssValue("background-color"), "rgba(113, 106, 202, 1)");
+    driver.quit();
+  }
+
+  @Test(description = "По нажатию на кнопку “Сформировать резюме” на новой вкладке открывается превью резюме")
+  public void previewResumeOpenInNewTab() {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    driver.findElement(By.xpath("//a[@class='btn btn-brand m-btn']")).click();
+    driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+    ArrayList<String> tabs2 = new ArrayList<>(driver.getWindowHandles());
+    driver.switchTo().window(tabs2.get(1));
+    Assert.assertTrue(driver.findElement(By.xpath("//div[@class='page']")).isDisplayed());
+    driver.quit();
+  }
+
+  @Test(description = "Блок “Резюме” состоит из:" + "1. Заголовок" + "2. Должности" + "3. Краткого резюме" + "4. Кнопка “Редактировать резюме” (АТ)")
+  public void elementsOfBlockResumeInProfile() {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    List<WebElement> resumeBlock = driver.findElements(By.xpath("//div[@class='tab-pane active']//div[@class='m-portlet'][1]"));
+    System.out.println(resumeBlock);
+    driver.quit();
+    //не готов
+  }
+
 }
