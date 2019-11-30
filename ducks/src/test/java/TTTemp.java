@@ -194,10 +194,50 @@ public class TTTemp {
   public void elementsOfBlockResumeInProfile() {
     developLogIn();
     driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
-    List<WebElement> resumeBlock = driver.findElements(By.xpath("//div[@class='tab-pane active']//div[@class='m-portlet'][1]"));
-    System.out.println(resumeBlock);
+    WebElement resumeBlockInProfile = driver.findElement(By.xpath("//div[@id='m_tabs_6_1']//div[@class='m-portlet'][.//h3[contains(text(), 'Резюме')]]"));
+    Assert.assertTrue(resumeBlockInProfile.findElement(By.xpath(".//div[@class='m-portlet__head']")).isDisplayed());
+    Assert.assertTrue(resumeBlockInProfile.findElement(By.xpath(".//div[@class='btn-group m-btn-group']")).isDisplayed());
+    Assert.assertTrue(resumeBlockInProfile.findElement(By.xpath(".//div[@class='m-list-search__result-item'][1]")).isDisplayed());
+    Assert.assertTrue(resumeBlockInProfile.findElement(By.xpath(".//div[@class='m-list-search__result-item'][2]")).isDisplayed());
     driver.quit();
-    //не готов
+  }
+
+  @Test(description = "Блок “График работы” состоит из" + "1. Заголовок" + "2. Таблица с графиком работ" + "3. Кнопка “Редактировать график” (АТ)")
+  public void elementsOfBlockScheduleInProfile() {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    WebElement scheduleBlockInProfile = driver.findElement(By.xpath("//div[@id='m_tabs_6_1']//div[@class='m-portlet'][.//h3[contains(text(), 'График работы')]]"));
+    Assert.assertTrue(scheduleBlockInProfile.findElement(By.xpath(".//div[@class='m-portlet__head']")).isDisplayed());
+    Assert.assertTrue(scheduleBlockInProfile.findElement(By.xpath(".//div[@class='btn-group m-btn-group']")).isDisplayed());
+    Assert.assertTrue(scheduleBlockInProfile.findElement(By.xpath(".//div[@class='m-portlet__body']")).isDisplayed());
+    driver.quit();
+  }
+
+  @Test(description = "Блок “Контакты” состоит из:" + "1. E-mail корпоративный" + "2. E-mail дополнительный" +
+          "3. Скайп" + "4. Телефон основной" + "5. Телефон дополнительный" + "6. Адрес" + "7. Кнопка “Редактировать контакты” (АТ)")
+  public void elementsOfBlockContactsInProfile() {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    WebElement contactsBlockInProfile = driver.findElement(By.xpath("//div[@id='m_tabs_6_1']//div[@class='m-portlet'][.//h3[contains(text(), 'Контакты')]]"));
+    Assert.assertTrue(contactsBlockInProfile.findElement(By.xpath(".//span[@class='m-list-search__result-item-text corporate-email']")).isDisplayed());
+    Assert.assertTrue(contactsBlockInProfile.findElement(By.xpath(".//span[@class='m-list-search__result-item-text additional-email']")).isDisplayed());
+    Assert.assertTrue(contactsBlockInProfile.findElement(By.xpath(".//span[@class='m-list-search__result-item-text skype']")).isDisplayed());
+    Assert.assertTrue(contactsBlockInProfile.findElement(By.xpath(".//span[@class='m-list-search__result-item-text phone']")).isDisplayed());
+    Assert.assertTrue(contactsBlockInProfile.findElement(By.xpath(".//span[@class='m-list-search__result-item-text additional-phone']")).isDisplayed());
+    Assert.assertTrue(contactsBlockInProfile.findElement(By.xpath(".//span[@class='m-list-search__result-item-text city']")).isDisplayed());
+    Assert.assertTrue(contactsBlockInProfile.findElement(By.xpath(".//div[@class='btn-group m-btn-group']")).isDisplayed());
+    driver.quit();
+  }
+
+  @Test(description = "Блок “Окружения” состоит из:" + "1. Заголовок" + "2. Таблица окружений" + "3. Кнопка “+ Добавить устройство” (АТ)")
+  public void elementsOfBlockEnvironment() {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    WebElement environmentBlockInProfile = driver.findElement(By.xpath("//div[@id='m_tabs_6_1']//div[@class='m-portlet'][.//h3[contains(text(), 'Окружения')]]"));
+    Assert.assertTrue(environmentBlockInProfile.findElement(By.xpath(".//div[@class='m-portlet__head']")).isDisplayed());
+    Assert.assertTrue(environmentBlockInProfile.findElement(By.xpath(".//div[@class='btn-group m-btn-group']")).isDisplayed());
+    Assert.assertTrue(environmentBlockInProfile.findElement(By.xpath(".//div[@class='m-portlet__body']")).isDisplayed());
+    driver.quit();
   }
 
 }
