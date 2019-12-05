@@ -240,4 +240,38 @@ public class TTTemp {
     driver.quit();
   }
 
+  @Test(description = "По нажатию на кнопку “Редактировать резюме” открывается окно “Изменение краткого резюме сотрудника” (AT) ПРГЛ 23")
+  public void popUpOfEditResume() {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    driver.findElement(By.xpath("//button[@class='btn btn-brand m-btn m-btn--icon btn-outline-second']")).click();
+    Assert.assertTrue(driver.findElement(By.xpath("//form[@class='post-info']")).isDisplayed());
+    driver.quit();
+  }
+
+  @Test(description = "Окно состоит из:" + "1. Название “Изменение краткого резюме сотрудника" + "2. Поле “Должность" +
+          "3. Поле “Краткое резюме" + "4. Описание к полю “Краткое резюме" + "5. Кнопка “Закрыть без сохранения” (без заливки)" +
+          "6. Кнопка “Сохранить” (фиолетовая заливка)" + "7. Кнопка крестик “Закрыть” (AT), ПРГЛ 24 P.S да тут проще и красивее было сделать" +
+          " просто через Assert.assertEquals и геттекст но я захотел потренироваться в циклах и коллекциях")
+  public void isElementsPresentInEditResumeForm() throws InterruptedException {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    driver.findElement(By.xpath("//button[@class='btn btn-brand m-btn m-btn--icon btn-outline-second']")).click();
+    Thread.sleep(2000);
+    Assert.assertEquals(driver.findElement(By.xpath("//div[@class='modal fade show']//div[@class='modal-dialog modal-lg']//h5[@class='modal-title']")).getText(), "Изменение краткого резюме сотрудника");
+    List<WebElement> elementsOfEditeResumeForm = driver.findElements(By.xpath("//div[@class='form-group']//label[@class='form-control-label']"));
+    ArrayList<String> elementsStrings = new ArrayList<>();
+    elementsStrings.add("Должность");
+    elementsStrings.add("Краткое резюме");
+    ArrayList<String> actualTextInElements = new ArrayList<>();
+    for (WebElement elementsInDiv : elementsOfEditeResumeForm) {
+      actualTextInElements.add(elementsInDiv.getText());
+    }
+    Assert.assertEquals(actualTextInElements, elementsStrings);
+    Assert.assertTrue(driver.findElement(By.xpath("//div[@class='modal-body']//p[contains(text(), 'Опишите себя в 2-3 предложениях (когда начался и как развивался путь в тестировании, что вы умеете делать круче других, какие ваши сильные стороны, что считаете самым главным в работе).')]")).isDisplayed());
+    Assert.assertTrue(driver.findElement(By.xpath("//div[@class='modal fade show']//div[@class='modal-footer']//button[@class='btn btn-secondary']")).isDisplayed());
+    Assert.assertTrue(driver.findElement(By.xpath("//button[@class='btn btn-primary update-post-info']")).isDisplayed());
+    Assert.assertTrue(driver.findElement(By.xpath("//div[@class='modal fade show']//button[@class='close']")).isDisplayed());
+    driver.quit();
+  }
 }
