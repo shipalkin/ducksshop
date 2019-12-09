@@ -274,4 +274,36 @@ public class TTTemp {
     Assert.assertTrue(driver.findElement(By.xpath("//div[@class='modal fade show']//button[@class='close']")).isDisplayed());
     driver.quit();
   }
+
+  @Test(description = "Название “Изменение краткого резюме сотрудника" + "Выравнивание по левому краю ПРГЛ 25")
+  public void headOfEditeResumeForm() throws InterruptedException {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    driver.findElement(By.xpath("//button[@class='btn btn-brand m-btn m-btn--icon btn-outline-second']")).click();
+    Thread.sleep(2000);
+    Assert.assertTrue(driver.findElement(By.xpath("//div[@class='modal fade show']//div[@class='modal-header']//h5")).getCssValue("text-align:").isEmpty());
+    driver.quit();
+  }
+
+  @Test(description = "Под заголовком присутствует горизонтальная полоса(бордер).ПРГЛ 26")
+  public void borderOfHeaderEditResumeForm() throws InterruptedException {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    driver.findElement(By.xpath("//button[@class='btn btn-brand m-btn m-btn--icon btn-outline-second']")).click();
+    Thread.sleep(2000);
+    Assert.assertEquals(driver.findElement(By.xpath("//div[@class='modal fade show']//div[@class='modal-header']")).getCssValue("border-bottom"), "1px solid rgb(233, 236, 239)");
+    driver.quit();
+  }
+
+  @Test(description = "Под названием расположено поле “Должность” (АТ)(Заголовком). ПРГЛ 27")
+  public void checkFieldPostEditResumeForm() throws InterruptedException {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    driver.findElement(By.xpath("//button[@class='btn btn-brand m-btn m-btn--icon btn-outline-second']")).click();
+    Thread.sleep(2000);
+    int fieldPostPosition = driver.findElement(By.xpath("//div[@class='form-group']//select")).getLocation().y;
+    int headerPosition = driver.findElement(By.xpath("//div[@class='modal fade show']//div[@class='modal-header']")).getLocation().y;
+    Assert.assertTrue(fieldPostPosition > headerPosition);
+    driver.quit();
+  }
 }
