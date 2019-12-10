@@ -306,4 +306,43 @@ public class TTTemp {
     Assert.assertTrue(fieldPostPosition > headerPosition);
     driver.quit();
   }
+
+  @Test(description = "Поле “Должность” – выпадающий список с 22 элементами: ПРГЛ 28")
+  public void elementsOfPostFieldInResumeForm() throws InterruptedException {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    driver.findElement(By.xpath("//button[@class='btn btn-brand m-btn m-btn--icon btn-outline-second']")).click();
+    Thread.sleep(2000);
+    WebElement selectElements = driver.findElement(By.xpath("//div[@class='form-group']//select"));
+    List<WebElement> selectedAllOptions = selectElements.findElements(By.xpath("./option"));
+    List<String> textOfElements = new ArrayList<>();
+    for (WebElement nameOfElement : selectedAllOptions) {
+      textOfElements.add(nameOfElement.getText().trim());
+    }
+    List<String> stringsOfElements = new ArrayList();
+    stringsOfElements.add("HR");
+    stringsOfElements.add("Административный директор");
+    stringsOfElements.add("Аккаунт-менеджер");
+    stringsOfElements.add("Аналитик");
+    stringsOfElements.add("Ведущий специалист по тестированию");
+    stringsOfElements.add("Директор по развитию бизнеса");
+    stringsOfElements.add("Заместитель генерального директора");
+    stringsOfElements.add("Куратор образовательных проектов");
+    stringsOfElements.add("Маркетолог");
+    stringsOfElements.add("Менеджер по продажам");
+    stringsOfElements.add("Преподаватель английского языка");
+    stringsOfElements.add("Разработчик");
+    stringsOfElements.add("Руководитель департамента");
+    stringsOfElements.add("Руководитель отдела автоматизации тестирования");
+    stringsOfElements.add("Системный администратор");
+    stringsOfElements.add("Специалист по автоматизированному тестированию");
+    stringsOfElements.add("Специалист по нагрузочному тестированию");
+    stringsOfElements.add("Специалист по тестированию");
+    stringsOfElements.add("Тест-менеджер");
+    stringsOfElements.add("Технический директор");
+    stringsOfElements.add("Фея");
+    stringsOfElements.add("Финансист");
+    Assert.assertEquals(textOfElements, stringsOfElements);
+    driver.quit();
+  }
 }
