@@ -2,6 +2,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -343,6 +344,30 @@ public class TTTemp {
     stringsOfElements.add("Фея");
     stringsOfElements.add("Финансист");
     Assert.assertEquals(textOfElements, stringsOfElements);
+    driver.quit();
+  }
+
+  @Test(description = "В выпадающем списке можно выбрать только один вариант ПРГЛ 29")
+  public void multiplineSelectInDropList() throws InterruptedException {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    driver.findElement(By.xpath("//button[@class='btn btn-brand m-btn m-btn--icon btn-outline-second']")).click();
+    Thread.sleep(2000);
+    WebElement dropList = driver.findElement(By.xpath("//div[@class='form-group']//select"));
+    Select selectElements = new Select(dropList);
+    Assert.assertFalse(selectElements.isMultiple());
+    driver.quit();
+  }
+
+  @Test(description = "test isMultiple")
+  public void testIsMultiple() throws InterruptedException {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    driver.findElement(By.xpath("//div[@class='m-portlet__head']//button[@class='m-btn btn btn-brand btn-outline-second btn_edit_schedule']")).click();
+    Thread.sleep(2000);
+    WebElement dropList = driver.findElement(By.xpath("//select[@name='field-weekday[1][days][]']"));
+    Select selectElements = new Select(dropList);
+    Assert.assertTrue(selectElements.isMultiple());
     driver.quit();
   }
 }
