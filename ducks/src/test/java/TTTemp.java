@@ -308,7 +308,7 @@ public class TTTemp {
     driver.quit();
   }
 
-  @Test(description = "Поле “Должность” – выпадающий список с 22 элементами: ПРГЛ 28")
+  @Test(description = "Поле “Должность” – выпадающий список с 22 элементами: ПРГЛ 28, ПРГЛ 30")
   public void elementsOfPostFieldInResumeForm() throws InterruptedException {
     developLogIn();
     driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
@@ -347,7 +347,8 @@ public class TTTemp {
     driver.quit();
   }
 
-  @Test(description = "В выпадающем списке можно выбрать только один вариант ПРГЛ 29")
+  @Test(description = "В выпадающем списке можно выбрать только один вариант ПРГЛ 29 этот тест включает в себя неолько проверок" +
+          "1. что атрибут мулльтиплай есть и 2. что выбор нескольких вариантов невозможен")
   public void multiplineSelectInDropList() throws InterruptedException {
     developLogIn();
     driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
@@ -356,18 +357,52 @@ public class TTTemp {
     WebElement dropList = driver.findElement(By.xpath("//div[@class='form-group']//select"));
     Select selectElements = new Select(dropList);
     Assert.assertFalse(selectElements.isMultiple());
+    //Конец первой проверки
+    List<WebElement> variantsInDropList = driver.findElements(By.xpath("//div[@class='form-group']//option"));
+    for (WebElement variantGetText : variantsInDropList) {
+      if (variantGetText.getText().equalsIgnoreCase("HR")) ;
+      variantGetText.getText().equalsIgnoreCase("Административный директор");
+      {
+        variantGetText.click();
+      }
+    }
+    Thread.sleep(2000);
+    driver.findElement(By.xpath("//button[@class='btn btn-primary update-post-info']")).click();
+    driver.findElement(By.xpath("//button[@class='btn btn-brand m-btn m-btn--icon btn-outline-second']")).click();
+    Assert.assertFalse(driver.findElement(By.xpath("//div[@class='form-group']//option[@value='6']")).isSelected());
+    Assert.assertFalse(driver.findElement(By.xpath("//div[@class='form-group']//option[@value='9']")).isSelected());
     driver.quit();
   }
 
-  @Test(description = "test isMultiple")
-  public void testIsMultiple() throws InterruptedException {
+  @Test(description = "Под полем “Должность” расположено поле “Краткое резюме” (AT), ПРГЛ 31")
+  public void placeOfFieldResume() throws InterruptedException {
     developLogIn();
     driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
-    driver.findElement(By.xpath("//div[@class='m-portlet__head']//button[@class='m-btn btn btn-brand btn-outline-second btn_edit_schedule']")).click();
+    driver.findElement(By.xpath("//button[@class='btn btn-brand m-btn m-btn--icon btn-outline-second']")).click();
     Thread.sleep(2000);
-    WebElement dropList = driver.findElement(By.xpath("//select[@name='field-weekday[1][days][]']"));
-    Select selectElements = new Select(dropList);
-    Assert.assertTrue(selectElements.isMultiple());
+    int postField = driver.findElement(By.xpath("//form[@class='post-info']//select[@class='form-control m-input']")).getLocation().getY();
+    int resumeField = driver.findElement(By.xpath("//div[@class='form-group']//textarea[@class='form-control']")).getLocation().getY();
+    Assert.assertTrue(postField < resumeField);
     driver.quit();
   }
+
+  @Test(description = "Поле “Краткое резюме” – текстовое поле для ввода (AT), ПРГЛ 32")
+  public void resumeFieldIsTextArea() throws InterruptedException {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    driver.findElement(By.xpath("//button[@class='btn btn-brand m-btn m-btn--icon btn-outline-second']")).click();
+    Thread.sleep(2000);
+    Assert.assertTrue(driver.findElement(By.xpath("//div[@class='form-group']//textarea[@class='form-control']")).isDisplayed());
+    driver.quit();
+  }
+
+  @Test(description = "Поведение при наведении курсора на поле “Краткое резюме” (меняет вид на текстовый) ПРГЛ 33")
+  public void resumeFieldHasTextCursor() {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    driver.findElement(By.xpath("//button[@class='btn btn-brand m-btn m-btn--icon btn-outline-second']")).click();
+    Assert.assertEquals(driver.findElement(By.xpath("//div[@class='form-group']//textarea[@class='form-control']")).getCssValue("cursor"), "text");
+    driver.quit();
+  }
+
 }
