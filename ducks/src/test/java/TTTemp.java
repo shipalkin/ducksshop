@@ -405,4 +405,47 @@ public class TTTemp {
     driver.quit();
   }
 
+  @Test(description = "Поле Краткое резюме (можно вручную расширять), ПРГЛ 34")
+  public void resumeFieldCanBeResized() {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    driver.findElement(By.xpath("//button[@class='btn btn-brand m-btn m-btn--icon btn-outline-second']")).click();
+    Assert.assertEquals(driver.findElement(By.xpath("//div[@class='form-group']//textarea[@class='form-control']")).getCssValue("resize"), "vertical");
+    driver.quit();
+  }
+
+  @Test(description = "При нажатии на кнопку “Закрыть без сохранения” форма закрывается изменения не вносятся (АТ) ПРГЛ 35")
+  public void noChangesToTheFieldWhenCloseButtonClicked() throws InterruptedException {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    driver.findElement(By.xpath("//button[@class='btn btn-brand m-btn m-btn--icon btn-outline-second']")).click();
+    Thread.sleep(2000);
+    String textBeforeQuit = driver.findElement(By.xpath("//div[@class='modal-body']//textarea[@id='post-description']")).getText();
+    driver.findElement(By.xpath("//div[@class='modal fade show']//button[contains(text(), 'Закрыть без сохранения')]")).click();
+    driver.findElement(By.xpath("//button[@class='btn btn-brand m-btn m-btn--icon btn-outline-second']")).click();
+    Thread.sleep(2000);
+    String textAfterQuit = driver.findElement(By.xpath("//div[@class='modal-body']//textarea[@id='post-description']")).getText();
+    Assert.assertEquals(textAfterQuit, textBeforeQuit);
+    driver.quit();
+  }
+
+  @Test(description = "При нажатии на кнопку “Закрыть без сохранения” изменения в форме не сохраняются.(АТ) ПРГЛ 36(БАГ ЕСТЬ НЕ ДОЛЖЕН РАБОТАТЬ ТЕСТ на 17.12.19")
+  public void noChangesToTheFieldsInsideFormWhenCloseButtonClicked() throws InterruptedException {
+    developLogIn();
+    driver.get("https://tt-develop.quality-lab.ru/user/274/show/profile");
+    driver.findElement(By.xpath("//button[@class='btn btn-brand m-btn m-btn--icon btn-outline-second']")).click();
+    Thread.sleep(2000);
+    String textBeforeQuit = driver.findElement(By.xpath("//div[@class='modal-body']//textarea[@id='post-description']")).getText();
+    driver.findElement(By.xpath("//div[@class='modal-body']//textarea[@id='post-description']")).click();
+    driver.findElement(By.xpath("//div[@class='modal-body']//textarea[@id='post-description']")).clear();
+    driver.findElement(By.xpath("//div[@class='modal-body']//textarea[@id='post-description']")).sendKeys("123123Test");
+    Thread.sleep(3000);
+    driver.findElement(By.xpath("//div[@class='modal fade show']//div[@class='modal-footer']//button[contains(text(), 'Закрыть без сохранения')]")).click();
+    driver.findElement(By.xpath("//div[@class='modal fade show']//div[@class='modal-footer']//button[contains(text(), 'Закрыть без сохранения')]")).click();
+    driver.findElement(By.xpath("//button[@class='btn btn-brand m-btn m-btn--icon btn-outline-second']")).click();
+    Thread.sleep(2000);
+    String textAfterQuit = driver.findElement(By.xpath("//div[@class='modal-body']//textarea[@id='post-description']")).getText();
+    Assert.assertEquals(textBeforeQuit, textAfterQuit);
+    driver.quit();
+  }
 }
